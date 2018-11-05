@@ -1,24 +1,48 @@
-// pages/detail/detail.js
+const db = wx.cloud.database()
+const _ = db.command
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    product: {
-    id: 1,
-    image: 'https://product-1256088332.cos.ap-guangzhou.myqcloud.com/product2.jpg',
-    name: '商品',
-    price: 480.5,
-    source: '国内·广东'
-  },
+    product: {},
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getProduct(options.id)
+    console.log(options.id)
+    // 这里options.id返回的类型是str，后边查询需要强转Number
+    // let a = typeof (optios.id)
+    // console.log(a)
+    // console.log(typeof(Number(a)))
+  },
 
+  getProduct(id) {
+    wx.showLoading({
+      title: '商品信息加载中。。。',
+    })
+    db.collection('product').where({
+      id: Number(id)
+    }).get({
+      success: res => {
+        wx.hideLoading()
+        console.log("res")
+        console.log(res)
+        this.setData({
+          product: res.data[0]
+        })
+      },
+      fail: err => {
+        wx.hideLoading()
+        wx.showToast({
+          title: '请检查网络连接！',
+        })
+      }
+    })
   },
 
   /**
