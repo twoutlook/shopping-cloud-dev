@@ -10,7 +10,8 @@
     "pages/home/home",
     "pages/order/order",
     "pages/trolley/trolley",
-    "pages/user/user"
+    "pages/user/user",
+    "pages/detail/detail"
   ],
   "tabBar": {
     "list": [
